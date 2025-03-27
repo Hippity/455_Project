@@ -17,14 +17,13 @@ const theme = createTheme({});
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+      <CssBaseline  />
       <SnackbarProvider>
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             minHeight: "100vh",
-            width: "100%",
           }}
         >
           <Header />

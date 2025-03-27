@@ -4,7 +4,6 @@ import {
   CircularProgress,
   Divider,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -25,13 +24,12 @@ const RSAKeyManagementForm = ({ setKeyPair, keyPair }) => {
   const [keySize, setKeySize] = useState(keyPair.keySize);
   const [isGenerating, setIsGenerating] = useState(false);
 
-
   // Generate Private and Public Key
   const handleGenerateKeys = async () => {
     try {
       setIsGenerating(true);
-      const response = await rsaAPI.generateKeyPair({keySize: keySize});
-      const data = response.data.data
+      const response = await rsaAPI.generateKeyPair({ keySize: keySize });
+      const data = response.data.data;
       const keyPairObj = {
         publicKey: data.public_key,
         privateKey: data.private_key,
@@ -42,7 +40,7 @@ const RSAKeyManagementForm = ({ setKeyPair, keyPair }) => {
         `Successfully generated ${keySize}-bit RSA key pair`,
         "success"
       );
-      console.log(keyPair)
+      console.log(keyPair);
     } catch (error) {
       showSnackbar(`Error generating key pair: ${error.message}`, "error");
     } finally {
@@ -62,26 +60,15 @@ const RSAKeyManagementForm = ({ setKeyPair, keyPair }) => {
     );
   };
 
-  // Download text as file
-  const downloadAsFile = (text, filename) => {
-    const element = document.createElement("a");
-    const file = new Blob([text], { type: "text/plain" });
-    element.href = URL.createObjectURL(file);
-    element.download = filename;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  };
-
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
         RSA Key Management
       </Typography>
 
-      <Grid  container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth>
+      <Box display={"flex"} flexDirection={"column"} gap={2}>
+        <Box>
+          <FormControl>
             <InputLabel id="key-size-label">Key Size</InputLabel>
             <Select
               labelId="key-size-label"
@@ -93,13 +80,12 @@ const RSAKeyManagementForm = ({ setKeyPair, keyPair }) => {
               <MenuItem value={2048}>2048 bits</MenuItem>
             </Select>
           </FormControl>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} sm={6}>
+        <Box>
           <Button
             variant="contained"
             color="primary"
-            fullWidth
             startIcon={
               isGenerating ? (
                 <CircularProgress size={20} color="inherit" />
@@ -112,85 +98,72 @@ const RSAKeyManagementForm = ({ setKeyPair, keyPair }) => {
           >
             {isGenerating ? "Generating..." : "Generate Key Pair"}
           </Button>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12}>
-          <Divider sx={{ my: 2 }} />
-          <Typography variant="subtitle1" gutterBottom>
-            Public Key
-          </Typography>
-          <TextField
-            multiline
-            fullWidth
-            minRows={4}
-            maxRows={6}
-            value={keyPair.publicKey}
-            slotProps={{input : {
-                readOnly: true
-            }}}
-            variant="outlined"
-            placeholder="Public key will appear here after generation"
-          />
-          <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
-            <Button
-              size="small"
-              startIcon={<ContentCopyIcon />}
-              onClick={() => copyToClipboard(keyPair.publicKey, "Public key")}
-              disabled={!keyPair.publicKey}
-            >
-              Copy
-            </Button>
-            <Button
-              size="small"
-              startIcon={<DownloadIcon />}
-              onClick={() =>
-                downloadAsFile(keyPair.publicKey, "rsa_public_key.pem")
-              }
-              disabled={!keyPair.publicKey}
-            >
-              Download
-            </Button>
+        <Box display={"flex"} width={"100%"} gap={2}>
+          <Box width={"50%"}>
+            <Typography variant="subtitle1" gutterBottom>
+              Public Key
+            </Typography>
+            <TextField
+              multiline
+              fullWidth
+              minRows={4}
+              maxRows={6}
+              value={keyPair.publicKey}
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+              variant="outlined"
+              placeholder="Public key will appear here after generation"
+            />
+            <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
+              <Button
+                size="small"
+                startIcon={<ContentCopyIcon />}
+                onClick={() => copyToClipboard(keyPair.publicKey, "Public key")}
+                disabled={!keyPair.publicKey}
+              >
+                Copy
+              </Button>
+            </Box>
           </Box>
-        </Grid>
 
-        <Grid item xs={12}>
-          <Typography variant="subtitle1" gutterBottom>
-            Private Key
-          </Typography>
-          <TextField
-            multiline
-            fullWidth
-            minRows={4}
-            maxRows={8}
-            value={keyPair.privateKey}
-            slotProps={{input : {
-                readOnly: true
-            }}}
-            variant="outlined"
-            placeholder="Private key will appear here after generation"
-          />
-          <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
-            <Button
-              size="small"
-              startIcon={<ContentCopyIcon />}
-              onClick={() => copyToClipboard(keyPair.privateKey, "Private key")}
-              disabled={!keyPair.privateKey}
-            >
-              Copy
-            </Button>
-            <Button
-              size="small"
-              startIcon={<DownloadIcon />}
-              onClick={() =>
-                downloadAsFile(keyPair.privateKey, "rsa_private_key.pem")
-              }
-              disabled={!keyPair.privateKey}
-            >
-              Download
-            </Button>
+          <Box width={"50%"}>
+            <Typography variant="subtitle1" gutterBottom>
+              Private Key
+            </Typography>
+            <TextField
+              multiline
+              fullWidth
+              minRows={4}
+              maxRows={8}
+              value={keyPair.privateKey}
+              slotProps={{
+                input: {
+                  readOnly: true,
+                },
+              }}
+              variant="outlined"
+              placeholder="Private key will appear here after generation"
+            />
+            <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
+              <Button
+                size="small"
+                startIcon={<ContentCopyIcon />}
+                onClick={() =>
+                  copyToClipboard(keyPair.privateKey, "Private key")
+                }
+                disabled={!keyPair.privateKey}
+              >
+                Copy
+              </Button>
+            </Box>
           </Box>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

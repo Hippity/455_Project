@@ -5,7 +5,6 @@ import {
   CircularProgress,
   FormControl,
   FormControlLabel,
-  Grid,
   Radio,
   RadioGroup,
   TextField,
@@ -14,6 +13,7 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 import { rsaAPI } from "../services/api";
 import { useSnackbar } from "../contexts/SnackbarContext";
@@ -38,6 +38,12 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
       }
     );
   };
+
+  const [uplaodedFile , setUploadedFile] = useState()
+
+  const handleFileUpload = () => {
+    // TO DO
+  }
 
   // Process encryption or decryption
   const processOperation = async () => {
@@ -102,11 +108,11 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
         RSA Encryption/Decryption
       </Typography>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
+      <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2}>
+        <Box>
           <FormControl component="fieldset">
             <RadioGroup
-              column
+              row
               value={operation}
               onChange={(e) => {
                 setOperation(e.target.value);
@@ -126,9 +132,9 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
               />
             </RadioGroup>
           </FormControl>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12}>
+        <Box item xs={12}>
           <Typography variant="subtitle1" gutterBottom>
             {operation === "encrypt" ? "Plain Text" : "Cipher Text"}
           </Typography>
@@ -144,10 +150,21 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
                 ? "Enter text to encrypt"
                 : "Enter base64 encoded cipher text"
             }
+            disabled={uplaodedFile}
           />
-        </Grid>
+           <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
+            <Button
+              size="small"
+              startIcon={<FileUploadIcon />}
+              onClick={() => handleFileUpload}
+              disabled={inputText}
+            >
+              Upload File
+            </Button>
+          </Box>
+        </Box>
 
-        <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+        <Box item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
           <Button
             variant="contained"
             color="primary"
@@ -169,9 +186,9 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
               ? "Encrypt"
               : "Decrypt"}
           </Button>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12}>
+        <Box item xs={12}>
           <Typography variant="subtitle1" gutterBottom>
             {operation === "encrypt" ? "Cipher Text" : "Plain Text"}
           </Typography>
@@ -198,8 +215,8 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
               Copy
             </Button>
           </Box>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };

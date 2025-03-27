@@ -4,7 +4,6 @@ import { Box, Typography} from "@mui/material";
 const Footer = () => {
   return (
     <Box
-      width={"100%"}
       sx={{
         backgroundColor: (theme) => theme.palette.grey[100],
       }}
