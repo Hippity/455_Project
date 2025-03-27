@@ -36,7 +36,7 @@ const RSAForm = () => {
         sx={{ marginBottom: 3 }}
       >
         <Tab icon={<VpnKeyIcon />} label="Key Management" />
-        <Tab icon={<LockIcon />} label="Encryption/Decryption" />
+        <Tab icon={<LockIcon />} label="Encryption and Decryption" />
       </Tabs>
 
       {/* Key Management Tab */}
