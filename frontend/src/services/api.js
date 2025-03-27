@@ -1,13 +1,25 @@
 import axios from 'axios';
 
-// Create axios instance with base URL
+// Determine the base URL based on the environment
+const getBaseUrl = () => {
+
+    if (process.env.NODE_ENV === 'production') {
+    return '';  // Use relative URL in production
+  }
+  
+  return 'http://localhost:8000';
+};
+
+// Create axios instance with dynamic base URL
 const api = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: getBaseUrl(),
 });
 
-// Jobs API
+// RSA API endpoints
 export const rsaAPI = {
   generateKeyPair: (data) => api.post('/api/generate', data),
   encryptMessage: (data) => api.post('/api/encrypt', data),
   decryptMessage: (data) => api.post('/api/decrypt', data),
 };
+
+export default rsaAPI;
