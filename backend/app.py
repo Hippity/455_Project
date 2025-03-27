@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from services.rsa_service import RSAService
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 CORS(app)  # Enable CORS for all routes
 
 # Create a global RSA service instance
@@ -100,5 +101,29 @@ def decrypt_message():
             'error': str(e)
         }), 500
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    """
+    Serve the React application for all non-API routes
+    """
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
+
+# Add more routes for health checks (useful for Azure)
+@app.route('/health')
+def health_check():
+    """
+    Health check endpoint for Azure
+    """
+    return jsonify({
+        'status': 'healthy',
+        'service': 'RSA-455'
+    })
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3001, debug=True)
+    # Get port from environment variable (for Azure) or use default 5000
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

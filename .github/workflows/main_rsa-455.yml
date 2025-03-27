@@ -28,12 +28,38 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-      
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
+      - name: Install Python dependencies
+        run: pip install -r backend/requirements.txt
+
+      # Setup Node.js for React build
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      # Install and build React app
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build React application
+        run: |
+          cd frontend
+          npm run build
+
+      # Move built React files to Flask static directory
+      - name: Setup Flask to serve React
+        run: |
+          mkdir -p backend/static
+          cp -r frontend/dist/* backend/static/
+          cp backend/app.py .
+          cp backend/requirements.txt .
+
+      # Zip everything for deployment
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
@@ -44,6 +70,7 @@ jobs:
           path: |
             release.zip
             !venv/
+            !frontend/node_modules/
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,6 +78,7 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
@@ -64,7 +92,6 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -78,4 +105,3 @@ jobs:
         with:
           app-name: 'RSA-455'
           slot-name: 'Production'
-          
