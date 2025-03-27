@@ -28,7 +28,7 @@ const RSAForm = () => {
     <Box sx={{ width: "100%", maxWidth: 1200, mx: "auto", p: 3 }}>
       {/* Tabs */}
       <Tabs
-    width={"100%"}
+        width={"100%"}
         value={tabValue}
         onChange={handleTabChange}
         variant="fullWidth"
