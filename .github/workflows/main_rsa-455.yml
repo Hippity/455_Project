@@ -51,13 +51,22 @@ jobs:
           cd frontend
           npm run build
 
-      # Move built React files to Flask static directory
+      # Move built React files to Flask static directory and copy services directory
       - name: Setup Flask to serve React
         run: |
-          mkdir -p backend/static
-          cp -r frontend/dist/* backend/static/
+          mkdir -p static
+          cp -r frontend/dist/* static/
           cp backend/app.py .
+          # Copy the services directory and its contents
+          mkdir -p services
+          cp -r backend/services/* services/
           cp backend/requirements.txt .
+
+      # Create startup command for Azure
+      - name: Create startup command
+        run: |
+          echo "gunicorn --bind=0.0.0.0:8000 app:app" > startup.sh
+          chmod +x startup.sh
 
       # Zip everything for deployment
       - name: Zip artifact for deployment
