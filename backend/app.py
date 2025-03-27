@@ -123,6 +123,17 @@ def health_check():
         'service': 'RSA-455'
     })
 
+"""
+Azure Authentication
+https://learn.microsoft.com/en-us/azure/app-service/overview-authentication-authorization
+https://rsa-455-dcgtggf8a7hnfddf.uaenorth-01.azurewebsites.net/.auth/login/google	
+I already set up the OPENID to login to with google this is the callback path
+https://rsa-455-dcgtggf8a7hnfddf.uaenorth-01.azurewebsites.net/.auth/login/google/callback
+Login Path 
+https://rsa-455-dcgtggf8a7hnfddf.uaenorth-01.azurewebsites.net/.auth/login/google	
+"""
+
+
 if __name__ == '__main__':
     # Get port from environment variable (for Azure) or use default 5000
     port = int(os.environ.get('PORT', 8000))
