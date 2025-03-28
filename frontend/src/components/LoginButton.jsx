@@ -6,6 +6,7 @@ import {
   Box,
   Typography,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -18,24 +19,35 @@ const LoginButton = () => {
     return <CircularProgress size={24} color="white" />;
   }
 
+  console.log(user);
+
   // Show avatar and logout button when user is authenticated
   if (user) {
-    // Create initials from user details if available
-    const initials = user.userDetails
-      ? user.userDetails
-          .split(" ")
-          .map((n) => n[0])
-          .join("")
-          .toUpperCase()
-          .substring(0, 2)
-      : "?";
+    // Extract name and picture from user's claims
+    let name = "User";
+    let pictureUrl = null;
+
+    // Find the name claim
+    const nameClaim = user.find((claim) => claim.typ === "name");
+    if (nameClaim) {
+      name = nameClaim.val.split(" ")[0]; // Get first name only
+    }
+
+    // Find the picture claim
+    const pictureClaim = user.find((claim) => claim.typ === "picture");
+    if (pictureClaim) {
+      pictureUrl = pictureClaim.val;
+    }
 
     return (
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Avatar sx={{ width: 32, height: 32, bgcolor: "primary.dark" }}>
-          {initials}
-        </Avatar>
-
+        <Tooltip title={`Hi ${name}!`}>
+          <Avatar
+            src={pictureUrl}
+            alt={name}
+            sx={{ width: 32, height: 32, bgcolor: "primary.dark" }}
+          />
+        </Tooltip>
         <IconButton size="small" sx={{ color: "white" }} onClick={logout}>
           <LogoutIcon />
         </IconButton>

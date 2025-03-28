@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { userAPI } from '../services/api';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { devResponse, userAPI } from "../services/api";
 
 // Create context
 const AuthContext = createContext(null);
@@ -14,18 +14,25 @@ export const AuthProvider = ({ children }) => {
     const fetchUserInfo = async () => {
       try {
         setLoading(true);
-        const response = await userAPI.userDetails();
-        console.log(response.data)
-        if (response.data && response.data.clientPrincipal) {
-          setUser(response.data.clientPrincipal);
+        var response = {}
+        
+        if (process.env.NODE_ENV === "production") {
+            response = await userAPI.userDetails();
         } else {
+            response = devResponse
+        }
+
+        if (response.data[0] && response.data[0].user_id) {
+          setUser(response.data[0].user_claims);
+        } else {
+            console.log("yo")
           setUser(null);
         }
         setError(null);
       } catch (err) {
-        console.error('Error fetching user info:', err);
+        console.error("Error fetching user info:", err);
         setUser(null);
-        setError('Failed to fetch authentication information');
+        setError("Failed to fetch authentication information");
       } finally {
         setLoading(false);
       }
@@ -60,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
