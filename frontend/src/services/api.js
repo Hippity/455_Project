@@ -22,4 +22,6 @@ export const rsaAPI = {
   decryptMessage: (data) => api.post('/api/decrypt', data),
 };
 
-export default rsaAPI;
+export const userAPI = {
+    userDetails: () => api.get('/.auth/me')
+}
