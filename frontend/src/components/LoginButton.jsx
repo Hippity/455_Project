@@ -27,13 +27,11 @@ const LoginButton = () => {
     let name = "User";
     let pictureUrl = null;
 
-    // Find the name claim
     const nameClaim = user.find((claim) => claim.typ === "name");
     if (nameClaim) {
-      name = nameClaim.val.split(" ")[0]; // Get first name only
+      name = nameClaim.val.split(" ")[0];
     }
 
-    // Find the picture claim
     const pictureClaim = user.find((claim) => claim.typ === "picture");
     if (pictureClaim) {
       pictureUrl = pictureClaim.val;

@@ -2,12 +2,25 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from services.rsa_service import RSAService
 import os
+from auth.auth_helper import require_auth
+from database.database import db
 
 app = Flask(__name__, static_folder='static')
 CORS(app)  # Enable CORS for all routes
 
 # Create a global RSA service instance
 rsa_service = RSAService()
+
+# Initialise DB
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
+db.init_app(app)
+
+# Create tables in the DB
+with app.app_context():
+    from models.savedCiphertext import SavedCiphertext
+
+    if app.config["SQLALCHEMY_DATABASE_URI"]:
+        db.create_all()
 
 @app.route('/api/generate', methods=['POST'])
 def generate_keys():
@@ -101,6 +114,25 @@ def decrypt_message():
             'error': str(e)
         }), 500
 
+@app.route('/api/test-auth', methods=['GET'])
+@require_auth
+def test_auth(user_info):
+    """
+    Test if auth is working
+    """
+    try:
+        return jsonify({
+            'success': True,
+            'data': {
+                'user_info': user_info
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
@@ -112,7 +144,6 @@ def serve(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
-# Add more routes for health checks (useful for Azure)
 @app.route('/health')
 def health_check():
     """
@@ -122,17 +153,6 @@ def health_check():
         'status': 'healthy',
         'service': 'RSA-455'
     })
-
-"""
-Azure Authentication
-https://learn.microsoft.com/en-us/azure/app-service/overview-authentication-authorization
-https://rsa-455-dcgtggf8a7hnfddf.uaenorth-01.azurewebsites.net/.auth/login/google	
-I already set up the OPENID to login to with google this is the callback path
-https://rsa-455-dcgtggf8a7hnfddf.uaenorth-01.azurewebsites.net/.auth/login/google/callback
-Login Path 
-https://rsa-455-dcgtggf8a7hnfddf.uaenorth-01.azurewebsites.net/.auth/login/google	
-"""
-
 
 if __name__ == '__main__':
     # Get port from environment variable (for Azure) or use default 5000

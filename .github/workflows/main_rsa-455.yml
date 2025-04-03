@@ -60,6 +60,15 @@ jobs:
           # Copy the services directory and its contents
           mkdir -p services
           cp -r backend/services/* services/
+          # Copy the auth directory and its contents
+          mkdir -p auth
+          cp -r backend/auth/* auth/
+          # Copy the database directory and its contents
+          mkdir -p database
+          cp -r backend/database/* database/
+          # Copy the models directory and its contents
+          mkdir -p models
+          cp -r backend/models/* models/
           cp backend/requirements.txt .
 
       # Create startup command for Azure

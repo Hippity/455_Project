@@ -6,9 +6,9 @@ import RSAKeyManagementForm from "./RSAKeyManagementForm";
 import RSAEncryptDecrypt from "./RSAEncyptDecrypt";
 
 /**
- * RSA Form component for key generation, encryption, and decryption
+ * Tabs component for key generation, encryption, and decryption
  */
-const RSAForm = () => {
+const AppTabs = () => {
   // State for tabs
   const [tabValue, setTabValue] = useState(0);
 
@@ -50,4 +50,4 @@ const RSAForm = () => {
   );
 };
 
-export default RSAForm;
+export default AppTabs;

@@ -9,9 +9,9 @@ import {
 } from "@mui/material";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import RSAForm from "./components/RSAForm";
 import { SnackbarProvider } from "./contexts/SnackbarContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import AppTabs from "./components/AppTabs";
 
 // Create a theme
 const theme = createTheme({});
@@ -31,7 +31,7 @@ function App() {
         >
           <Header />
           <Box sx={{ flexGrow: 1 }}>
-            <RSAForm />
+            <AppTabs />
           </Box>
 
           <Footer />
