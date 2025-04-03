@@ -16,6 +16,7 @@ def get_user_info_from_request():
         return None
     
     user_email = request.headers.get('X-MS-CLIENT-PRINCIPAL-NAME')
+
     print(user_email)
 
     # Create a user info object
