@@ -313,13 +313,15 @@ def extract_text():
 
         # Read file based on extension
         if file_ext == '.txt':
-            text = file.read().decode('utf-8')
+            text = file.read().decode('utf-8', errors='replace')
         elif file_ext == '.pdf':
             reader = PyPDF2.PdfReader(file)
-            text = '\n'.join([page.extract_text() for page in reader.pages])
+            text = '\n'.join([page.extract_text() or '' for page in reader.pages])
+            text = text.encode('utf-8', errors='replace').decode('utf-8')
         elif file_ext in ('.doc', '.docx'):
             doc = Document(file)
             text = '\n'.join([para.text for para in doc.paragraphs])
+            text = text.encode('utf-8', errors='replace').decode('utf-8')
         else:
             return jsonify({
                 'success': False,
