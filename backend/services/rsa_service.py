@@ -91,18 +91,24 @@ class RSAService:
             raise ValueError("Public key is not available")
         
         # Split text into chunks of 120 or 60 characters (RSA has size limits)
-        chunk_size = 190
+        max_chunk_size = 190
         if self.key_size == 1024:
-            chunk_size = 62
+            max_chunk_size = 62
         
+        plaintext_bytes = plaintext.encode('utf-8')
+        
+        # Split text into chunks based on byte size
+        chunks = []
+        for i in range(0, len(plaintext_bytes), max_chunk_size):
+            chunks.append(plaintext_bytes[i:i + max_chunk_size])
 
-        chunks = [plaintext[i:min(len(plaintext),i+chunk_size)] for i in range(0, len(plaintext), chunk_size)]
-        print(len(plaintext))
-        
+
         encrypted_chunks = []
         for chunk in chunks:
+            print(chunk)
+            print(len(chunk))
             ciphertext = self.public_key.encrypt(
-                chunk.encode('utf-8'),
+                chunk,
                 padding.OAEP(
                     mgf=padding.MGF1(algorithm=hashes.SHA256()),
                     algorithm=hashes.SHA256(),
@@ -133,7 +139,7 @@ class RSAService:
         
         # Split the ciphertext into chunks
         encrypted_chunks = ciphertext_b64.split('|')
-        
+
         decrypted_chunks = []
         for chunk in encrypted_chunks:
             ciphertext = base64.b64decode(chunk)
@@ -145,7 +151,8 @@ class RSAService:
                     label=None
                 )
             )
-            decrypted_chunks.append(plaintext.decode('utf-8'))
+            decrypted_chunks.append(plaintext)
         
         # Combine the decrypted chunks
-        return ''.join(decrypted_chunks)
+        combined_bytes = b''.join(decrypted_chunks)
+        return combined_bytes.decode('utf-8')

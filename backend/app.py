@@ -111,7 +111,7 @@ def decrypt_message():
             }), 400
         
         # After extracting text, validate UTF-8
-        if not is_valid_utf8(plaintext):
+        if not is_valid_utf8(ciphertext):
             return jsonify({
                 'success': False,
                 'error': 'Plaintext contains non-UTF-8 characters. Only UTF-8 encoded characters are supported.'
