@@ -1,28 +1,29 @@
 from flask import request, jsonify
 from functools import wraps
+import os
 
 def get_user_info_from_request():
     """
     Extract user information from Azure App Service Authentication headers
-    
-    Returns:
-        dict: User information including id, email, and name
     """
 
+    if os.environ.get("IS_DEV"):
+        return {
+            'user_id': 'dev-user-id',
+            'email': 'dev@example.com',
+        }
+
     user_id = request.headers.get('X-MS-CLIENT-PRINCIPAL-ID')
-    print(user_id)
     
     if not user_id:
         return None
     
     user_email = request.headers.get('X-MS-CLIENT-PRINCIPAL-NAME')
 
-    print(user_email)
-
     # Create a user info object
     user_info = {
         'user_id': user_id,
-        'email': user_email or user_id,  # Fallback to ID if email is not available
+        'email': user_email,  
     }
     
     return user_info

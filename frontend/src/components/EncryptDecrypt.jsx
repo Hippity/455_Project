@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -13,19 +13,30 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 
-import { rsaAPI } from "../services/api";
+import { extractTextAPI, rsaAPI } from "../services/api";
 import { useSnackbar } from "../contexts/SnackbarContext";
+import { useAuth } from "../contexts/AuthContext";
+import SaveCiphertextDialog from "./SaveCiphertextDialog";
 
-const RSAEncryptDecrypt = ({ keyPair }) => {
+const EncryptDecrypt = ({ keyPair }) => {
   const { showSnackbar } = useSnackbar();
+  const { user } = useAuth();
+  const fileInputRef = useRef(null);
 
   // State for encryption/decryption
   const [operation, setOperation] = useState("encrypt");
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+
+
+  const [uploadedFile, setUploadedFile] = useState(null);
+  const [isExtractingText, setIsExtractingText] = useState(false);
+
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
 
   // Copy text to clipboard
   const copyToClipboard = (text, label) => {
@@ -39,11 +50,69 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
     );
   };
 
-  const [uplaodedFile , setUploadedFile] = useState()
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
-  const handleFileUpload = () => {
-    // TO DO
+    try {
+      // Check file size (limit to 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        showSnackbar("File is too large. Maximum size is 10MB.", "error");
+        return;
+      }
+
+      // Create form data
+      const formData = new FormData();
+      formData.append("file", file);
+
+      // Extract text using backend
+      setIsExtractingText(true);
+      const response = await extractTextAPI.extractText(formData)
+
+      if (response.data.success) {
+        setInputText(response.data.data.text);
+        setUploadedFile(file);
+        showSnackbar(`Text extracted from ${file.name}`, "success");
+      } else {
+        showSnackbar(`Error: ${response.data.error}`, "error");
+      }
+    } catch (error) {
+      showSnackbar(`Error: ${error.message}`, "error");
+    } finally {
+      setIsExtractingText(false);
+      // Reset file input so the same file can be selected again
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleClearUploadedFile = () => {
+    setInputText("")
+    setUploadedFile(null)
   }
+
+  const handleOpenSaveDialog = () => {
+    if (!user) {
+      showSnackbar("Please log in to save encrypted messages", "warning");
+      return;
+    }
+
+    if (!outputText || operation !== "encrypt") {
+      showSnackbar("Please encrypt a message first", "warning");
+      return;
+    }
+
+    if (!keyPair.privateKey) {
+      showSnackbar(
+        "A private key is required to save the encrypted message",
+        "warning"
+      );
+      return;
+    }
+
+    setSaveDialogOpen(true);
+  };
 
   // Process encryption or decryption
   const processOperation = async () => {
@@ -69,14 +138,10 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
         });
         const data = response.data.data;
         setOutputText(data.ciphertext);
-
       } else {
         // Encrypt Check Private Key Exists
         if (!keyPair.privateKey) {
-          showSnackbar(
-            "Please generate or load a private key first",
-            "warning"
-          );
+          showSnackbar("Please generate a private key first", "warning");
           setIsProcessing(false);
           return;
         }
@@ -96,6 +161,7 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
         "success"
       );
     } catch (error) {
+      console.log(error);
       showSnackbar(`Error: ${error.message}`, "error");
     } finally {
       setIsProcessing(false);
@@ -103,12 +169,19 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
   };
 
   return (
-    <Box width={"100%"} >
-      <Typography variant="h6" gutterBottom>
+    <Box width={"100%"}>
+      <Typography fontWeight={"bold"} variant="h6" gutterBottom>
         RSA Encryption/Decryption
       </Typography>
 
-      <Box width={'100%'} display={'flex'} flexDirection={"column"} gap={2}>
+      <SaveCiphertextDialog
+        open={saveDialogOpen}
+        onClose={() => setSaveDialogOpen(false)}
+        ciphertext={outputText}
+        privateKey={keyPair.privateKey}
+      />
+
+      <Box width={"100%"} display={"flex"} flexDirection={"column"} gap={2}>
         <Box>
           <FormControl component="fieldset">
             <RadioGroup
@@ -150,17 +223,33 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
                 ? "Enter text to encrypt"
                 : "Enter base64 encoded cipher text"
             }
-            disabled={uplaodedFile}
           />
-           <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
+          <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
             <Button
               size="small"
               startIcon={<FileUploadIcon />}
-              onClick={() => handleFileUpload}
-              disabled={inputText}
+              onClick={() => fileInputRef.current.click()}
+              disabled={isExtractingText}
             >
               Upload File
             </Button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              accept=".txt,.pdf,.docx,.doc"
+              onChange={handleFileUpload}
+            />
+
+            {uploadedFile && (
+              <Button
+                size="small"
+                color="secondary"
+                onClick={handleClearUploadedFile}
+              >
+                Clear
+              </Button>
+            )}
           </Box>
         </Box>
 
@@ -197,9 +286,11 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
             fullWidth
             minRows={4}
             value={outputText}
-            slotProps={{input : {
-                readOnly: true
-            }}}
+            slotProps={{
+              input: {
+                readOnly: true,
+              },
+            }}
             variant="outlined"
             placeholder={`${
               operation === "encrypt" ? "Encrypted" : "Decrypted"
@@ -214,6 +305,18 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
             >
               Copy
             </Button>
+            {operation === "decrypt" ? (
+              <></>
+            ) : (
+              <Button
+                size="small"
+                startIcon={<BookmarkBorderIcon />}
+                onClick={() => handleOpenSaveDialog()}
+                disabled={!user || !outputText}
+              >
+                Save
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>
@@ -221,4 +324,4 @@ const RSAEncryptDecrypt = ({ keyPair }) => {
   );
 };
 
-export default RSAEncryptDecrypt;
+export default EncryptDecrypt;

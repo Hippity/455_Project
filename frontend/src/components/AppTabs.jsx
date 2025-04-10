@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import RSAKeyManagementForm from "./RSAKeyManagementForm";
-import RSAEncryptDecrypt from "./RSAEncyptDecrypt";
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import GenerateKeyPair from "./GenerateKeyPair";
+import EncryptDecrypt from "./EncryptDecrypt";
+import SavedCiphertexts from "./SavedCiphertexts";
+import HelpIcon from "@mui/icons-material/Help";
+import Help from "./Help";
 
 /**
  * Tabs component for key generation, encryption, and decryption
@@ -33,19 +37,27 @@ const AppTabs = () => {
         variant="fullWidth"
         indicatorColor="primary"
         textColor="primary"
-        sx={{ marginBottom: 3 }}
+        sx={{ marginBottom: 3}}
       >
-        <Tab icon={<VpnKeyIcon />} label="Key Management" />
+        <Tab icon={<VpnKeyIcon />} label="Generate Key Pair" />
         <Tab icon={<LockIcon />} label="Encryption and Decryption" />
+        <Tab icon={<TextSnippetIcon />} label="Saved Ciphertexts" />
+        <Tab icon={<HelpIcon />} label="Help" />
       </Tabs>
 
       {/* Key Management Tab */}
       {tabValue === 0 && (
-        <RSAKeyManagementForm setKeyPair={setKeyPair} keyPair={keyPair} />
+        <GenerateKeyPair setKeyPair={setKeyPair} keyPair={keyPair} />
       )}
 
       {/* Encryption/Decryption Tab */}
-      {tabValue === 1 && <RSAEncryptDecrypt keyPair={keyPair} />}
+      {tabValue === 1 && <EncryptDecrypt keyPair={keyPair} />}
+
+      {/* Saved Ciphertexts Tab */}
+      {tabValue === 2 && <SavedCiphertexts />}
+
+      {/* Help Tab */}
+      {tabValue === 3 && <Help />}
     </Box>
   );
 };

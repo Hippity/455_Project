@@ -14,10 +14,9 @@ import { useSnackbar } from "../contexts/SnackbarContext";
 import { useState } from "react";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import DownloadIcon from "@mui/icons-material/Download";
 import { rsaAPI } from "../services/api";
 
-const RSAKeyManagementForm = ({ setKeyPair, keyPair }) => {
+const GenerateKeyPair = ({ setKeyPair, keyPair }) => {
   const { showSnackbar } = useSnackbar();
 
   // State for key generation
@@ -40,7 +39,6 @@ const RSAKeyManagementForm = ({ setKeyPair, keyPair }) => {
         `Successfully generated ${keySize}-bit RSA key pair`,
         "success"
       );
-      console.log(keyPair);
     } catch (error) {
       showSnackbar(`Error generating key pair: ${error.message}`, "error");
     } finally {
@@ -62,7 +60,7 @@ const RSAKeyManagementForm = ({ setKeyPair, keyPair }) => {
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
+      <Typography fontWeight={'bold'} variant="h6" gutterBottom>
         RSA Key Management
       </Typography>
 
@@ -168,4 +166,4 @@ const RSAKeyManagementForm = ({ setKeyPair, keyPair }) => {
   );
 };
 
-export default RSAKeyManagementForm;
+export default GenerateKeyPair;

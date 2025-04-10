@@ -19,18 +19,16 @@ export const AuthProvider = ({ children }) => {
         if (process.env.NODE_ENV === "production") {
             response = await userAPI.userDetails();
         } else {
-            response = devResponse
+           response = devResponse
         }
 
         if (response.data[0] && response.data[0].user_id) {
           setUser(response.data[0].user_claims);
         } else {
-            console.log("yo")
           setUser(null);
         }
         setError(null);
       } catch (err) {
-        console.error("Error fetching user info:", err);
         setUser(null);
         setError("Failed to fetch authentication information");
       } finally {

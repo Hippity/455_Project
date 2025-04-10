@@ -19,8 +19,6 @@ const LoginButton = () => {
     return <CircularProgress size={24} color="white" />;
   }
 
-  console.log(user);
-
   // Show avatar and logout button when user is authenticated
   if (user) {
     // Extract name and picture from user's claims

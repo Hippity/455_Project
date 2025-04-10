@@ -3,7 +3,7 @@ import axios from "axios";
 // Determine the base URL based on the environment
 const getBaseUrl = () => {
   if (process.env.NODE_ENV === "production") {
-    return ""; 
+    return "";
   }
 
   return "http://localhost:8000";
@@ -22,10 +22,10 @@ export const rsaAPI = {
 
 // Saved Ciphertext Endpoints
 export const savedCiphertextAPI = {
-  getAll: () => api.get('/saved-ciphertexts'),
-  getById: (id) => api.get(`/saved-ciphertexts/${id}`),
-  create: (data) => api.post('/saved-ciphertexts', data),
-  delete: (id) => api.delete(`/saved-ciphertexts/${id}`),
+  getAll: () => api.get("/api/saved-ciphertexts"),
+  create: (data) => api.post("/api/saved-ciphertexts", data),
+  delete: (id) => api.delete(`/api/saved-ciphertexts/${id}`),
+  decrypt: (id) => api.post(`/api/saved-ciphertexts/${id}/decrypt`),
 };
 
 // User API Endpoints
@@ -33,15 +33,22 @@ export const userAPI = {
   userDetails: () => api.get("/.auth/me"),
 };
 
+export const extractTextAPI = {
+  extractText: (formData) =>
+    api.post("/api/extract-text", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+};
+
 // Test response for authentication during development
 export const devResponse = {
   data: [
     {
-      access_token:
-        "",
+      access_token: "",
       expires_on: "2025-03-28T10:41:21.9135544Z",
-      id_token:
-        "",
+      id_token: "",
       provider_name: "google",
       user_claims: [
         { typ: "iss", val: "https://accounts.google.com" },

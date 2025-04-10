@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg2965" viewBox="0 0 166.37 168.47" version="1.1">
+  <defs id="defs2967">
+    <linearGradient id="linearGradient5402" y2="-148.13" gradientUnits="userSpaceOnUse" y1="-298.54" x2="387.75" x1="379.92">
+      <stop id="stop3954" stop-color="#0146a8" offset="0"/>
+      <stop id="stop3956" stop-color="#0146a8" stop-opacity="0" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient3560" x1="381.89" gradientUnits="userSpaceOnUse" x2="387.75" gradientTransform="matrix(.93571 0 0 .97143 381.87 926.59)" y1="-310.05" y2="-147.97">
+      <stop id="stop3919-9" stop-color="#edf4fd" stop-opacity=".52846" offset="0"/>
+      <stop id="stop3921-0" stop-color="#175bb3" stop-opacity="0" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g id="layer1" transform="translate(-326.81 -470.27)">
+    <g id="g5393" stroke-width="1.9" transform="matrix(.75853 0 0 .75853 -154.87 6.3084)">
+      <path id="path4197" transform="matrix(1 0 0 1.0126 356.94 933.8)" fill="#103683" d="m497.42-208.45c0 60.568-49.1 109.67-109.67 109.67-60.568 0-109.67-49.1-109.67-109.67 0-60.568 49.1-109.67 109.67-109.67 60.568 0 109.67 49.1 109.67 109.67z"/>
+      <path id="path4199" transform="matrix(.93571 0 0 .97143 381.87 926.59)" fill="url(#linearGradient5402)" d="m497.42-208.45c0 60.568-49.1 109.67-109.67 109.67-60.568 0-109.67-49.1-109.67-109.67 0-60.568 49.1-109.67 109.67-109.67 60.568 0 109.67 49.1 109.67 109.67z"/>
+      <g id="g4220" fill="#eee" transform="translate(-8.6168 -2.35)">
+        <path id="rect4189" d="m729.75 660.3c-6.5919 0-11.875 5.3085-11.875 11.906v25.188h12.719v-14.125c0-6.5978 5.3143-11.906 11.906-11.906h25.5c6.5919 0 11.906 5.3085 11.906 11.906v14.125h12.188v-25.188c0-6.5978-5.3143-11.906-11.906-11.906h-50.438z"/>
+        <path id="rect4193" transform="translate(0 308.27)" d="m716.47 395.12c-6.5919 0-11.906 5.3085-11.906 11.906v14.969c0 6.5978 5.3143 11.906 11.906 11.906h75.906c5.877 0 10.735-4.2212 11.719-9.8125h-11.594c-6.5919 0-11.906-3.3938-11.906-7.625s5.3143-7.6562 11.906-7.6562h11.781v-1.7812c0-6.5978-5.3143-11.906-11.906-11.906h-75.906z"/>
+        <path id="path4218" d="m716.47 749.22c-6.5919 0-11.906 5.3085-11.906 11.906v14.969c0 6.5978 5.3143 11.906 11.906 11.906h75.906c5.877 0 10.735-4.2212 11.719-9.8125h-11.594c-6.5919 0-11.906-3.3938-11.906-7.625s5.3143-7.6562 11.906-7.6562h11.781v-1.7812c0-6.5978-5.3143-11.906-11.906-11.906h-75.906z"/>
+      </g>
+      <path id="path4201" fill="url(#linearGradient3560)" d="m744.69 617.55c-56.674 0-102.62 47.725-102.62 106.56 0 3.7524 0.1979 7.4415 0.5625 11.094 50.067 18.726 126.58 32.369 204.69-10.594 0.00074-0.16695 0-0.33287 0-0.5 0-58.837-45.951-106.56-102.62-106.56z"/>
+    </g>
+  </g>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>locked-blue</dc:title>
+        <dc:date>2010-08-04T13:04:34</dc:date>
+        <dc:description>Single web 2.0  icons from my set. check the whole set in my clip art if you want get all of it together.</dc:description>
+        <dc:source>http://openclipart.org/detail/77365/locked-blue-by-shokunin</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>shokunin</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>arrow</rdf:li>
+            <rdf:li>chat</rdf:li>
+            <rdf:li>clip art</rdf:li>
+            <rdf:li>clipart</rdf:li>
+            <rdf:li>communicator</rdf:li>
+            <rdf:li>computer</rdf:li>
+            <rdf:li>desktop</rdf:li>
+            <rdf:li>earth</rdf:li>
+            <rdf:li>email.mail</rdf:li>
+            <rdf:li>globe</rdf:li>
+            <rdf:li>icon</rdf:li>
+            <rdf:li>icons</rdf:li>
+            <rdf:li>information</rdf:li>
+            <rdf:li>interface</rdf:li>
+            <rdf:li>lock</rdf:li>
+            <rdf:li>messenger</rdf:li>
+            <rdf:li>mobile</rdf:li>
+            <rdf:li>network</rdf:li>
+            <rdf:li>pc</rdf:li>
+            <rdf:li>phone</rdf:li>
+            <rdf:li>secure</rdf:li>
+            <rdf:li>set</rdf:li>
+            <rdf:li>shopping cart</rdf:li>
+            <rdf:li>unlock</rdf:li>
+            <rdf:li>web 2.0</rdf:li>
+            <rdf:li>website</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
