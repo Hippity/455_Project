@@ -82,6 +82,7 @@ def encrypt_message():
         })
         
     except Exception as e:
+        print (e)
         return jsonify({
             'success': False,
             'error': str(e)
