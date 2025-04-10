@@ -82,32 +82,39 @@ class RSAService:
             public_key_pem (str, optional): Public key in PEM format. If not provided, uses the instance public key.
             
         Returns:
-            str: Base64 encoded encrypted message
+            str: Base64 encoded encrypted message with chunks separated by '|'
         """
         if public_key_pem:
             self.load_keys(public_key_pem=public_key_pem)
             
         if not self.public_key:
             raise ValueError("Public key is not available")
-            
-        ciphertext = self.public_key.encrypt(
-            plaintext.encode('utf-8'),
-            padding.OAEP(
-                mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                algorithm=hashes.SHA256(),
-                label=None
-            )
-        )
         
-        # Encode the encrypted bytes to base64 for easy transmission
-        return base64.b64encode(ciphertext).decode('utf-8')
+        # Split text into chunks of 200 characters (RSA has size limits)
+        chunk_size = 200
+        chunks = [plaintext[i:i+chunk_size] for i in range(0, len(plaintext), chunk_size)]
+        
+        encrypted_chunks = []
+        for chunk in chunks:
+            ciphertext = self.public_key.encrypt(
+                chunk.encode('utf-8'),
+                padding.OAEP(
+                    mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                    algorithm=hashes.SHA256(),
+                    label=None
+                )
+            )
+            encrypted_chunks.append(base64.b64encode(ciphertext).decode('utf-8'))
+        
+        # Join encrypted chunks with '|' delimiter
+        return '|'.join(encrypted_chunks)
     
     def decrypt(self, ciphertext_b64, private_key_pem=None):
         """
         Decrypt a message using RSA private key
         
         Args:
-            ciphertext_b64 (str): Base64 encoded encrypted message
+            ciphertext_b64 (str): Base64 encoded encrypted message with chunks separated by '|'
             private_key_pem (str, optional): Private key in PEM format. If not provided, uses the instance private key.
             
         Returns:
@@ -118,17 +125,22 @@ class RSAService:
             
         if not self.private_key:
             raise ValueError("Private key is not available")
-            
-        # Decode the base64 encoded ciphertext
-        ciphertext = base64.b64decode(ciphertext_b64)
         
-        plaintext = self.private_key.decrypt(
-            ciphertext,
-            padding.OAEP(
-                mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                algorithm=hashes.SHA256(),
-                label=None
+        # Split the ciphertext into chunks
+        encrypted_chunks = ciphertext_b64.split('|')
+        
+        decrypted_chunks = []
+        for chunk in encrypted_chunks:
+            ciphertext = base64.b64decode(chunk)
+            plaintext = self.private_key.decrypt(
+                ciphertext,
+                padding.OAEP(
+                    mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                    algorithm=hashes.SHA256(),
+                    label=None
+                )
             )
-        )
+            decrypted_chunks.append(plaintext.decode('utf-8'))
         
-        return plaintext.decode('utf-8')
+        # Combine the decrypted chunks
+        return ''.join(decrypted_chunks)
