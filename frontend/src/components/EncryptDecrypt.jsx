@@ -74,7 +74,12 @@ const EncryptDecrypt = ({ keyPair }) => {
         setUploadedFile(file);
         showSnackbar(`Text extracted from ${file.name}`, "success");
       } else {
-        showSnackbar(`Error: ${response.data.error}`, "error");
+        // Handle UTF-8 error specifically
+        if (response.data.error.includes('non-UTF-8')) {
+          showSnackbar('Error: File contains non-UTF-8 characters. Please use a UTF-8 encoded file.', 'error');
+        } else {
+          showSnackbar(`Error: ${response.data.error}`, "error");
+        }
       }
     } catch (error) {
       showSnackbar(`Error: ${error.message}`, "error");
