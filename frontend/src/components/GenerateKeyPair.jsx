@@ -108,14 +108,12 @@ const GenerateKeyPair = ({ setKeyPair, keyPair }) => {
               fullWidth
               minRows={4}
               maxRows={6}
+              onChange={(e) =>
+                setKeyPair({ ...keyPair, publicKey: e.target.value })
+              }
               value={keyPair.publicKey}
-              slotProps={{
-                input: {
-                  readOnly: true,
-                },
-              }}
               variant="outlined"
-              placeholder="Public key will appear here after generation"
+              placeholder="Paste or genreate a public key (used for encryption)"
             />
             <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
               <Button
@@ -138,14 +136,12 @@ const GenerateKeyPair = ({ setKeyPair, keyPair }) => {
               fullWidth
               minRows={4}
               maxRows={8}
+              onChange={(e) =>
+                setKeyPair({ ...keyPair, privateKey: e.target.value })
+              }
               value={keyPair.privateKey}
-              slotProps={{
-                input: {
-                  readOnly: true,
-                },
-              }}
               variant="outlined"
-              placeholder="Private key will appear here after generation"
+              placeholder="Paste or genreate a private key (used for decryption)"
             />
             <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
               <Button

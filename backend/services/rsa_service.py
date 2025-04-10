@@ -105,8 +105,6 @@ class RSAService:
 
         encrypted_chunks = []
         for chunk in chunks:
-            print(chunk)
-            print(len(chunk))
             ciphertext = self.public_key.encrypt(
                 chunk,
                 padding.OAEP(
