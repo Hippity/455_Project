@@ -26,6 +26,13 @@ with app.app_context():
     if app.config["SQLALCHEMY_DATABASE_URI"]:
         db.create_all()
 
+def is_valid_utf8(text):
+    try:
+        text.encode('utf-8').decode('utf-8')
+        return True
+    except UnicodeError:
+        return False
+
 @app.route('/api/generate', methods=['POST'])
 def generate_keys():
     """
@@ -65,7 +72,7 @@ def encrypt_message():
         data = request.get_json()
         public_key = data.get('publicKey')
         plaintext = data.get('plaintext')
-        
+
         if not public_key or not plaintext:
             return jsonify({
                 'success': False,
@@ -101,6 +108,13 @@ def decrypt_message():
             return jsonify({
                 'success': False,
                 'error': 'Private key and ciphertext are required'
+            }), 400
+        
+        # After extracting text, validate UTF-8
+        if not is_valid_utf8(plaintext):
+            return jsonify({
+                'success': False,
+                'error': 'Plaintext contains non-UTF-8 characters. Only UTF-8 encoded characters are supported.'
             }), 400
             
         plaintext = rsa_service.decrypt(ciphertext, private_key)
@@ -285,13 +299,6 @@ def decrypt_saved_ciphertext(ciphertext_id, user_info):
             'success': False,
             'error': str(e)
         }), 500
-
-def is_valid_utf8(text):
-    try:
-        text.encode('utf-8').decode('utf-8')
-        return True
-    except UnicodeError:
-        return False
 
 @app.route('/api/extract-text', methods=['POST'])
 def extract_text():

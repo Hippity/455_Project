@@ -90,13 +90,17 @@ class RSAService:
         if not self.public_key:
             raise ValueError("Public key is not available")
         
-        # Split text into chunks of 120 characters (RSA has size limits)
-        chunk_size = 120
+        # Split text into chunks of 120 or 60 characters (RSA has size limits)
+        chunk_size = 190
+        if self.key_size == 1024:
+            chunk_size = 62
+        
+
         chunks = [plaintext[i:min(len(plaintext),i+chunk_size)] for i in range(0, len(plaintext), chunk_size)]
+        print(len(plaintext))
         
         encrypted_chunks = []
         for chunk in chunks:
-            print (chunk)
             ciphertext = self.public_key.encrypt(
                 chunk.encode('utf-8'),
                 padding.OAEP(
