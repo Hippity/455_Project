@@ -30,7 +30,7 @@ const Help = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            This is a web application that demonstrates RSA (Rivest-Shamir-Adleman) 
+            This is a web application that demonstrates RSA (Rivest-Shamir-Adleman)
             public-key cryptography. It allows you to:
           </Typography>
           <List>
@@ -60,47 +60,56 @@ const Help = () => {
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant="h6">How to use the app</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={{display: "flex", flexDirection: 'column', gap: 1}}>
           <Typography variant="h6" gutterBottom>
             1. Generate Key Pair
           </Typography>
-          <Typography paragraph>
-            - Choose between 1024-bit or 2048-bit key sizes
-            - Click "Generate Key Pair" to create your public and private keys
-            - Copy and save your keys securely
+          <Typography>
+            - You can either <strong>paste an existing private or public key</strong> (in PKCS8 format) or choose to <strong>generate a new key pair</strong> with your specified settings.
+          </Typography>
+          <Typography>
+            - Select between 1024-bit or 2048-bit key sizes. Note: In this app, 2048-bit is considered more secure than 1024-bit.
+          </Typography>
+          <Typography>
+            - Click "Generate Key Pair" to create your new public and private keys, both formatted in PKCS8.
+          </Typography>
+          <Typography>
+            - Once generated or pasted, copy and save your keys securely as they are essential for your data’s security.
           </Typography>
 
           <Typography variant="h6" gutterBottom>
             2. Encrypt/Decrypt Messages
           </Typography>
-          <Typography paragraph>
-            - Select either Encrypt or Decrypt mode
-            - For encryption: Enter plaintext and use the public key
-            - For decryption: Enter ciphertext and use the private key
-            - You can upload text files for encryption/decryption
+          <Typography>
+            - Select either Encrypt or Decrypt mode.
+          </Typography>
+          <Typography>
+            - For encryption: Enter your plaintext message and use the public key.
+          </Typography>
+          <Typography>
+            - For decryption: Enter your ciphertext in base64 format and use the private key.
+          </Typography>
+          <Typography>
+            - You can work with messages of any length and include special characters.
+          </Typography>
+          <Typography>
+            - Additionally, you have the option to attach or extract text from various files (Docs, PDFs, and TXT files) for encryption and decryption.
+          </Typography>
+          <Typography>
+            - The process utilizes OAEP padding with SHA-256 to securely handle data.
           </Typography>
 
           <Typography variant="h6" gutterBottom>
             3. Manage Saved Ciphertexts
           </Typography>
-          <Typography paragraph>
-            - View all your saved encrypted messages
-            - Decrypt saved messages using your private key
-            - Delete messages you no longer need
+          <Typography>
+            - View and manage all your saved encrypted messages in one convenient location.
           </Typography>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6">Security Information</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography paragraph>
-            - Always keep your private key secure and never share it
-            - Use 2048-bit keys for stronger security
-            - The app uses OAEP padding with SHA-256 for secure encryption
-            - All cryptographic operations are performed in your browser
+          <Typography>
+            - Easily decrypt saved messages using your private key.
+          </Typography>
+          <Typography>
+            - Delete messages that are no longer needed.
           </Typography>
         </AccordionDetails>
       </Accordion>
