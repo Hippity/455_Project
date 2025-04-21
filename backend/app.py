@@ -307,10 +307,6 @@ def avalanche_effect():
     plaintext = data.get('plaintext')
     print(public_key, plaintext)
 
-    
-
-
-
     if not public_key or not plaintext:
         return jsonify({"error": "Missing parameters"}), 400
     
