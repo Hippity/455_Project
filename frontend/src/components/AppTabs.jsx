@@ -8,6 +8,7 @@ import EncryptDecrypt from "./EncryptDecrypt";
 import SavedCiphertexts from "./SavedCiphertexts";
 import AvalancheEffect from './AvalancheEffect';
 import HelpIcon from "@mui/icons-material/Help";
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import Help from "./Help";
 
 /**
@@ -44,7 +45,7 @@ const AppTabs = () => {
         <Tab icon={<LockIcon />} label="Encryption and Decryption" />
         <Tab icon={<TextSnippetIcon />} label="Saved Ciphertexts" />
         <Tab icon={<HelpIcon />} label="Help" />
-        <Tab icon={<HelpIcon />} label="Help" />
+        <Tab icon={<AddBoxIcon  />} label="Avalanche Effect" />
       </Tabs>
 
       {/* Key Management Tab */}
