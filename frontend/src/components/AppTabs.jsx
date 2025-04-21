@@ -44,8 +44,8 @@ const AppTabs = () => {
         <Tab icon={<VpnKeyIcon />} label="Generate Key Pair" />
         <Tab icon={<LockIcon />} label="Encryption and Decryption" />
         <Tab icon={<TextSnippetIcon />} label="Saved Ciphertexts" />
-        <Tab icon={<HelpIcon />} label="Help" />
         <Tab icon={<AddBoxIcon  />} label="Avalanche Effect" />
+        <Tab icon={<HelpIcon />} label="Help" />
       </Tabs>
 
       {/* Key Management Tab */}
@@ -60,10 +60,10 @@ const AppTabs = () => {
       {tabValue === 2 && <SavedCiphertexts />}
 
       {/* Help Tab */}
-      {tabValue === 3 && <Help />}
+      {tabValue === 4 && <Help />}
 
       {/* Help Tab */}
-      {tabValue === 4 && <AvalancheEffect />}
+      {tabValue === 3 && <AvalancheEffect />}
     </Box>
   );
 };
