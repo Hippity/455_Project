@@ -6,7 +6,9 @@ import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import GenerateKeyPair from "./GenerateKeyPair";
 import EncryptDecrypt from "./EncryptDecrypt";
 import SavedCiphertexts from "./SavedCiphertexts";
+import AvalancheEffect from './AvalancheEffect';
 import HelpIcon from "@mui/icons-material/Help";
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import Help from "./Help";
 
 /**
@@ -43,6 +45,7 @@ const AppTabs = () => {
         <Tab icon={<LockIcon />} label="Encryption and Decryption" />
         <Tab icon={<TextSnippetIcon />} label="Saved Ciphertexts" />
         <Tab icon={<HelpIcon />} label="Help" />
+        <Tab icon={<AddBoxIcon  />} label="Avalanche Effect" />
       </Tabs>
 
       {/* Key Management Tab */}
@@ -58,6 +61,9 @@ const AppTabs = () => {
 
       {/* Help Tab */}
       {tabValue === 3 && <Help />}
+
+      {/* Help Tab */}
+      {tabValue === 4 && <AvalancheEffect />}
     </Box>
   );
 };

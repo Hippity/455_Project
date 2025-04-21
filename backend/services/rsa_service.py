@@ -1,6 +1,9 @@
 import base64
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+import binascii
 
 class RSAService:
     """
@@ -72,6 +75,48 @@ class RSAService:
                 private_key_pem.encode('utf-8'),
                 password=None
             )
+    
+    def compute_avalanche_effect(self, public_key_pem: str, plaintext: str):
+        # Load public key and determine key size
+        self.load_keys(public_key_pem=public_key_pem)
+        key_size = self.key_size  # Now properly set by load_keys
+        
+        # Use existing encryption method to handle chunking
+        original_ciphertext_b64 = self.encrypt(plaintext, public_key_pem)
+        modified_plaintext = 's' + plaintext 
+        modified_ciphertext_b64 = self.encrypt(modified_plaintext, public_key_pem)
+
+        # Decode both ciphertexts to bytes using existing logic
+        def decode_combined(ciphertext_b64):
+            return b''.join(
+                base64.b64decode(chunk) 
+                for chunk in ciphertext_b64.split('|')
+            )
+
+        original_bytes = decode_combined(original_ciphertext_b64)
+        modified_bytes = decode_combined(modified_ciphertext_b64)
+
+        # Calculate bit difference using hexadecimal comparison
+        original_hex = binascii.hexlify(original_bytes).decode()
+        modified_hex = binascii.hexlify(modified_bytes).decode()
+
+        diff_bits = sum(
+            bin(o_byte ^ m_byte).count('1')
+            for o_byte, m_byte in zip(original_bytes, modified_bytes)
+        )
+
+        total_bits = len(original_bytes) * 8
+        avalanche_percent = (diff_bits / total_bits) * 100
+
+        return {
+            "modified_plaintext": modified_plaintext,
+            "original_ciphertext": original_ciphertext_b64,
+            "modified_ciphertext": modified_ciphertext_b64,
+            "original_hex": original_hex,
+            "modified_hex": modified_hex,
+            "avalanche_percent": round(avalanche_percent, 2),
+            "key_size": key_size
+        }
     
     def encrypt(self, plaintext, public_key_pem=None):
         """

@@ -300,6 +300,27 @@ def decrypt_saved_ciphertext(ciphertext_id, user_info):
             'error': str(e)
         }), 500
 
+@app.route('/api/avalanche', methods=['POST'])
+def avalanche_effect():
+    data = request.get_json()
+    public_key = data.get('publicKey')
+    plaintext = data.get('plaintext')
+    print(public_key, plaintext)
+
+    
+
+
+
+    if not public_key or not plaintext:
+        return jsonify({"error": "Missing parameters"}), 400
+    
+    try:
+        result = RSAService().compute_avalanche_effect(public_key, plaintext)
+        print(result)
+        return jsonify({"success": True, "data": result})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/api/extract-text', methods=['POST'])
 def extract_text():
     """
