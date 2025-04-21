@@ -115,7 +115,7 @@ class RSAService:
             "original_hex": original_hex,
             "modified_hex": modified_hex,
             "avalanche_percent": round(avalanche_percent, 2),
-            "key_size": key_size
+            
         }
     
     def encrypt(self, plaintext, public_key_pem=None):
