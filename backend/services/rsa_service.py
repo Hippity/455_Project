@@ -2,8 +2,9 @@ import base64
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.asymmetric import padding 
 import binascii
+
 
 class RSAService:
     """
@@ -190,18 +191,24 @@ class RSAService:
         # Split the ciphertext into chunks
         encrypted_chunks = ciphertext_b64.split('|')
 
-        decrypted_chunks = []
-        for chunk in encrypted_chunks:
-            ciphertext = base64.b64decode(chunk)
-            plaintext = self.private_key.decrypt(
-                ciphertext,
-                padding.OAEP(
-                    mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                    algorithm=hashes.SHA256(),
-                    label=None
+
+        try:
+            decrypted_chunks = []
+            for chunk in encrypted_chunks:
+                ciphertext = base64.b64decode(chunk)
+                plaintext = self.private_key.decrypt(
+                    ciphertext,
+                    padding.OAEP(
+                        mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                        algorithm=hashes.SHA256(),
+                        label=None
+                    )
                 )
-            )
-            decrypted_chunks.append(plaintext)
+                decrypted_chunks.append(plaintext)
+
+        except Exception:
+            raise Exception("Invalid Ciphertext")
+    
         
         # Combine the decrypted chunks
         combined_bytes = b''.join(decrypted_chunks)

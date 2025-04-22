@@ -40,7 +40,7 @@ const GenerateKeyPair = ({ setKeyPair, keyPair }) => {
         "success"
       );
     } catch (error) {
-      showSnackbar(`Error generating key pair: ${error.message}`, "error");
+      showSnackbar(`Error generating key pair: ${error.response.data.error}`, "error");
     } finally {
       setIsGenerating(false);
     }
