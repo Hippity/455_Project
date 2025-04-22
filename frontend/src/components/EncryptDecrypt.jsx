@@ -82,7 +82,7 @@ const EncryptDecrypt = ({ keyPair }) => {
         }
       }
     } catch (error) {
-      showSnackbar(`Error: ${error.message}`, "error");
+      showSnackbar(`Error: ${error.response.data.error}`, "error");
     } finally {
       setIsExtractingText(false);
       // Reset file input so the same file can be selected again
@@ -166,8 +166,8 @@ const EncryptDecrypt = ({ keyPair }) => {
         "success"
       );
     } catch (error) {
-      console.log(error);
-      showSnackbar(`Error: ${error.message}`, "error");
+      console.log(error.response)
+      showSnackbar(`Error: ${error.response.data.error}`, "error");
     } finally {
       setIsProcessing(false);
     }

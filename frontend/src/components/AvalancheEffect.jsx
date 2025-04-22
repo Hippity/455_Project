@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Paper, Box } from '@mui/material';
 import { avalancheAPI } from "../services/api";
+import { useSnackbar } from '../contexts/SnackbarContext';
 
 const AvalancheEffect = () => {
+
+     const { showSnackbar } = useSnackbar();
+
     const [publicKey, setPublicKey] = useState('');
     const [plaintext, setPlaintext] = useState('');
     const [result, setResult] = useState(null);
@@ -21,20 +25,20 @@ const AvalancheEffect = () => {
             });
             setResult(response.data.data);
         } catch (error) {
-            setError('Error fetching data. Please try again.');
-            console.error('Error:', error);
+            showSnackbar(`Error : ${error.response.data.error}`, "error");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
-            <Typography variant="h6" gutterBottom>
-                Avalanche Effect Test
-            </Typography>
+        <Box>
+            <Typography fontWeight={"bold"} variant="h6" gutterBottom>
+            Avalanche Effect Test
+                  </Typography>
+           
             
-            <Typography paragraph sx={{ mb: 2 }}>
+            <Typography variant='body1' sx={{ mb: 2 }}>
                 The Avalanche Effect demonstrates how a small change in input (like flipping a single bit in your plaintext)
                 creates significant changes in the encrypted output.
                 Enter your public key and plaintext below, and we'll only add an 's' to the beggining of the plaintext to show how dramatically
@@ -65,17 +69,11 @@ const AvalancheEffect = () => {
                     type="submit" 
                     variant="contained" 
                     color="primary"
-                    disabled={loading}
+                    disabled={loading || !publicKey || !plaintext}
                 >
                     {loading ? 'Testing...' : 'Test Avalanche Effect'}
                 </Button>
             </form>
-            
-            {error && (
-                <Typography color="error" sx={{ mt: 2 }}>
-                    {error}
-                </Typography>
-            )}
 
             {result && (
                 <Box mt={3}>
@@ -93,7 +91,7 @@ const AvalancheEffect = () => {
                     </Typography>
                 </Box>
             )}
-        </Paper>
+        </Box>
     );
 };
 

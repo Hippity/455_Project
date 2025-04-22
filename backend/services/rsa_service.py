@@ -65,16 +65,23 @@ class RSAService:
             public_key_pem (str): Public key in PEM format
             private_key_pem (str): Private key in PEM format
         """
-        if public_key_pem:
-            self.public_key = serialization.load_pem_public_key(
-                public_key_pem.encode('utf-8')
-            )
-            
-        if private_key_pem:
-            self.private_key = serialization.load_pem_private_key(
-                private_key_pem.encode('utf-8'),
-                password=None
-            )
+        try:
+            if public_key_pem:
+                self.public_key = serialization.load_pem_public_key(
+                    public_key_pem.encode('utf-8')
+                )
+        except Exception:
+            raise Exception("Bad Public Key")
+
+        try:
+            if private_key_pem:
+                self.private_key = serialization.load_pem_private_key(
+                    private_key_pem.encode('utf-8'),
+                    password=None
+                )
+        except Exception:
+            raise Exception("Bad Private Key")
+        
     
     def compute_avalanche_effect(self, public_key_pem: str, plaintext: str):
         # Load public key and determine key size

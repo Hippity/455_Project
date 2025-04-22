@@ -73,7 +73,7 @@ def encrypt_message():
         public_key = data.get('publicKey')
         plaintext = data.get('plaintext')
 
-        if not public_key or not plaintext:
+        if not public_key.strip() or not plaintext.strip():
             return jsonify({
                 'success': False,
                 'error': 'Public key and plaintext are required'
@@ -104,7 +104,7 @@ def decrypt_message():
         private_key = data.get('privateKey')
         ciphertext = data.get('ciphertext')
         
-        if not private_key or not ciphertext:
+        if not private_key.strip() or not ciphertext.strip():
             return jsonify({
                 'success': False,
                 'error': 'Private key and ciphertext are required'

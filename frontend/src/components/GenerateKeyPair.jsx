@@ -60,7 +60,7 @@ const GenerateKeyPair = ({ setKeyPair, keyPair }) => {
 
   return (
     <Box>
-      <Typography fontWeight={'bold'} variant="h6" gutterBottom>
+      <Typography fontWeight={"bold"} variant="h6" gutterBottom>
         RSA Key Management
       </Typography>
 
@@ -124,6 +124,18 @@ const GenerateKeyPair = ({ setKeyPair, keyPair }) => {
               >
                 Copy
               </Button>
+              {keyPair.publicKey ? (
+                <Button
+                  color="secondary"
+                  size="small"
+                  onClick={() => setKeyPair({ ...keyPair, publicKey: "" })}
+                  disabled={!keyPair.publicKey}
+                >
+                  Clear
+                </Button>
+              ) : (
+                <></>
+              )}
             </Box>
           </Box>
 
@@ -154,6 +166,19 @@ const GenerateKeyPair = ({ setKeyPair, keyPair }) => {
               >
                 Copy
               </Button>
+
+              {keyPair.privateKey ? (
+                <Button
+                  color="secondary"
+                  size="small"
+                  onClick={() => setKeyPair({ ...keyPair, privateKey: "" })}
+                  disabled={!keyPair.privateKey}
+                >
+                  Clear
+                </Button>
+              ) : (
+                <></>
+              )}
             </Box>
           </Box>
         </Box>
